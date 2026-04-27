@@ -17,7 +17,7 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s | %(levelname)-8s | 
 logger = logging.getLogger(__name__)
 
 BASE_DIR = Path(__file__).resolve().parent
-TEMPLATE_FILE = BASE_DIR / "ACCEPTEANCE LETTER FORM_2.pdf"
+TEMPLATE_FILE = BASE_DIR / "acc.pdf"
 
 # Secure Email Configuration using Environment Variables
 SMTP_SERVER = "smtp.gmail.com"
