@@ -25,7 +25,6 @@ SMTP_PORT = 587
 EMAIL_ADDRESS = os.environ.get("EMAIL_ADDRESS")
 EMAIL_PASSWORD = os.environ.get("EMAIL_PASSWORD")
 
-# NEW: Safety check to ensure SMTP is configured on Render
 if not EMAIL_ADDRESS or not EMAIL_PASSWORD:
     logger.critical("CRITICAL ERROR: EMAIL_ADDRESS or EMAIL_PASSWORD environment variables are missing!")
     logger.critical("You must add these in the Render Dashboard -> Environment variables.")
@@ -110,6 +109,14 @@ def handle_fluent_forms():
         
         logger.info("Webhook triggered! Extracting data...")
 
+        # ---------------------------------------------------------
+        # NEW DEBUG BLOCK: Print the exact data from WordPress
+        # ---------------------------------------------------------
+        logger.info("========== RAW INCOMING DATA FROM FLUENT FORMS ==========")
+        logger.info(payload)
+        logger.info("=========================================================")
+        # ---------------------------------------------------------
+
         first_name = payload.get("first_name", "Student").strip().upper()
         surname = payload.get("surname", "").strip().upper()
         user_email = payload.get("email", "").strip()
@@ -125,7 +132,6 @@ def handle_fluent_forms():
 
         pdf_stream = fill_pdf_in_memory(TEMPLATE_FILE, pdf_data)
 
-        # Triggers the email sending function
         send_acceptance_email(pdf_stream, user_email, first_name)
 
         return jsonify({
